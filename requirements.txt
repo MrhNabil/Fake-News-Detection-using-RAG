@@ -1,0 +1,26 @@
+# Core
+numpy
+pandas
+scikit-learn
+matplotlib
+tqdm
+joblib
+requests
+json5
+
+# NLP & embeddings
+sentence-transformers
+torch
+langdetect
+newspaper3k
+beautifulsoup4
+
+# Vector database
+faiss-cpu
+
+# ML models
+xgboost
+lightgbm
+
+# Optional (only needed if running in Colab)
+# google-colab
