@@ -21,8 +21,8 @@ It combines a **retriever** (for factual grounding) with **Azure’s LLM** (for 
 
 ```
 News Input → Text Processing → Embedding → FAISS Retrieval
-        ↳ ML Classification → Decision Fusion → Output
-        ↳ Azure Phi-4 Mini Analysis →
+        ↳ ML Classification → Decision Fusion 
+        ↳ Azure Phi-4 Mini Analysis → Output
 ```
 
 ---
@@ -75,7 +75,7 @@ News Input → Text Processing → Embedding → FAISS Retrieval
 
 ## 📊 Dataset
 
-* **ISOT Fake News Dataset** (True.csv + Fake.csv) – [Dataset link](https://www.uvic.ca/ecs/ece/isot/datasets/fake-news/index.php)
+* **ISOT Fake News Dataset** (True.csv + Fake.csv) – [Dataset link](https://www.kaggle.com/datasets/emineyetm/fake-news-detection-datasets/data)
 * Custom scraped articles from Bangladeshi sources
 * Optional live scraping for real-time testing
 
