@@ -1,79 +1,124 @@
+# 📰 Fake News Detection with Retrieval-Augmented Generation (RAG) using Azure Phi-4 Mini
 
-# 📰 Fake News Detection with Retrieval-Augmented Generation (RAG)
-
-This project demonstrates how to use **Retrieval-Augmented Generation (RAG)** to detect and analyze potential fake news.
-It combines a **retriever** (for factual grounding) with a **large language model (LLM)** (for reasoning) to evaluate whether a given news article or snippet is reliable.
+This project demonstrates how to use **Retrieval-Augmented Generation (RAG)** with **Microsoft Azure’s Phi-4 Mini** model to detect and analyze potential fake news.
+It combines a **retriever** (for factual grounding) with **Azure’s LLM** (for reasoning) to evaluate whether a given news article or snippet is reliable.
 
 ---
 
 ## 📌 Features
 
 * Preprocessing and embedding of news articles
-* Vector database for semantic retrieval
-* Integration with a Large Language Model (LLM)
-* End-to-end Fake News Detection pipeline using RAG
-* Example queries with explanations
+* Vector database (**FAISS**) for semantic retrieval
+* Integration with **Azure Phi-4 Mini** for reasoning
+* Hybrid approach: ML classifier + LLM explanation
+* Real-time **web scraping** for live news verification
+* Interactive **Gradio interface** for testing
+* Evaluation on benchmark datasets and live news
 
 ---
 
-## 📊 Dataset
+## 🏗️ Architecture
 
-This project uses a dataset of news articles (fake and real).
-The text is preprocessed, cleaned, and embedded into a vector space for retrieval.
-
-👉 You can adapt the pipeline to your own dataset by replacing the preprocessing section in the notebook.
+```
+News Input → Text Processing → Embedding → FAISS Retrieval
+        ↳ ML Classification → Decision Fusion → Output
+        ↳ Azure Phi-4 Mini Analysis →
+```
 
 ---
 
 ## 🔎 Methodology
 
-1. **Data Preprocessing** – Clean and prepare raw text.
-2. **Embedding Generation** – Convert articles into embeddings for semantic similarity.
-3. **Retriever Setup** – Store embeddings in a vector database for fast lookups.
-4. **RAG Pipeline** – Combine retriever with LLM for fact-grounded classification and explanation.
-5. **Evaluation** – Run example queries to test the system.
+1. **Data Preprocessing** – Clean and normalize raw text
+2. **Embedding Generation** – Encode articles with Sentence Transformers
+3. **Vector Database** – Store embeddings in FAISS for fast lookups
+4. **Azure Phi-4 Mini** – Query model for reasoning and explanation
+5. **RAG Pipeline** – Fuse retriever evidence with LLM reasoning
+6. **Evaluation** – Test on ISOT dataset + live scraped articles
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Azure Setup
 
-Clone the repo and install dependencies:
+### Prerequisites
 
-```bash
-git clone https://github.com/your-username/fake-news-detection-rag.git
-cd fake-news-detection-rag
-pip install -r requirements.txt
-```
+* Azure account with **Azure OpenAI** access
+* Quota for **Phi-4 Mini**
+
+### Steps
+
+1. **Create Azure OpenAI resource**
+
+   * Portal → *Create Resource* → “Azure OpenAI”
+   * Choose subscription, region, and resource group
+
+2. **Deploy Phi-4 Mini**
+
+   * In your resource → *Model deployments*
+   * Deploy `phi-4-mini` (name it, e.g., `phi4mini-deploy`)
+
+3. **Get Keys & Endpoint**
+
+   * Resource → *Keys and Endpoint*
+   * Copy endpoint + one API key
+
+4. **Set Environment Variables**
+
+   ```python
+   import os
+   os.environ["AZURE_OPENAI_ENDPOINT"] = "https://<your-resource>.openai.azure.com/"
+   os.environ["AZURE_OPENAI_API_KEY"] = "<your-api-key>"
+   os.environ["AZURE_OPENAI_DEPLOYMENT"] = "phi4mini-deploy"
+   ```
+
+---
+
+## 📊 Dataset
+
+* **ISOT Fake News Dataset** (True.csv + Fake.csv) – [Dataset link](https://www.uvic.ca/ecs/ece/isot/datasets/fake-news/index.php)
+* Custom scraped articles from Bangladeshi sources
+* Optional live scraping for real-time testing
 
 ---
 
 ## ▶️ Usage
 
-1. Open the notebook:
+1. Install dependencies:
 
-```bash
-jupyter notebook Fake_News_Detection_RAG.ipynb
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Configure Azure credentials (see above)
+3. Place datasets in `/data/raw/`
+4. Run the pipeline:
 
-2. Replace the placeholder API key section with your own credentials (if required).
-3. Run the cells step by step to reproduce the pipeline.
+   ```bash
+   jupyter notebook Fake_News_Detection_RAG.ipynb
+   ```
+5. Launch Gradio UI (runs locally):
+
+   * Enter text or URL
+   * Get classification + explanation
+   * Inspect retrieved evidence
 
 ---
 
 ## ✅ Example Output
 
-The pipeline takes a piece of text, retrieves relevant context from the dataset, and asks the LLM to classify and explain whether the text is likely **real or fake**.
+* **Classification**: Real / Fake / Uncertain
+* **Confidence score** (probability)
+* **Reasoning explanation** (from Phi-4 Mini)
+* **Retrieved evidence** used in decision
 
 ---
 
 ## 🏁 Conclusion & Future Work
 
-This project shows the potential of RAG in combating misinformation.
-Future work may include:
-
-* Expanding to larger and multilingual datasets
-* Fine-tuning LLMs on fake news corpora
-* Using multiple retriever sources for broader factual grounding
+* Expand to larger and multilingual datasets
+* Fine-tune Phi-4 Mini on fake news corpora
+* Add multiple retrieval sources
+* Real-time alerts for misinformation
+* Extend to image-based news verification
 
 ---
 
@@ -82,3 +127,12 @@ Future work may include:
 MIT License – free to use and modify.
 
 ---
+
+## ⚠️ Disclaimer
+
+This tool is for **research and support** in misinformation detection.
+It is **not an absolute authority** on truth. Always verify critical information with trusted sources.
+
+---
+
+Do you want me to also add a **ready-to-copy code snippet** in the README showing how to call `phi-4-mini` with `azure.ai` SDK (instead of just env vars), so users can test the connection before running the pipeline?
